@@ -227,7 +227,7 @@ export class UserManager extends OidcClient {
                     Log.error("UserManager._validateIdTokenFromTokenRefreshToken: sub in id_token does not match current sub");
                     return Promise.reject(new Error("sub in id_token does not match current sub"));
                 }
-                if (payload.auth_time && payload.auth_time !== profile.auth_time) {
+                if (payload.auth_time && Math.abs(payload.auth_time - profile.auth_time) > this._settings.clockSkew) {
                     Log.error("UserManager._validateIdTokenFromTokenRefreshToken: auth_time in id_token does not match original auth_time");
                     return Promise.reject(new Error("auth_time in id_token does not match original auth_time"));
                 }
